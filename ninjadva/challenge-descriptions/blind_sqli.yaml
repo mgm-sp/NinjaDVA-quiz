@@ -1,0 +1,12 @@
+---
+:description: |
+  Exploit the SQL injection using a recorded macro in burp and sqlmap.
+
+:category: "SQLi"
+:name: "Blind SQLi"
+:value: 100
+:keys:
+  - "TODO"
+
+:solutions:
+  - "TODO"
