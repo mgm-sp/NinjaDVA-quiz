@@ -39,24 +39,24 @@ public class Api {
 		rs = stmt.executeQuery();
 
 		Questions qs = new Questions();
-        while ( rs.next() ) {
-        	Question q = new Question();
-        	q.setTitle(rs.getString("title"));
-        	q.setType(rs.getString("type"));
-        	PreparedStatement answerStatement = get_Connection().prepareStatement("SELECT answer_number, text FROM possible_answers WHERE question_round = ? AND question_number = ? ORDER BY answer_number");
-        	answerStatement.setInt(1, currentRound);
-        	answerStatement.setInt(2, rs.getInt("question_number"));
-        	ResultSet answersQuery = answerStatement.executeQuery();	
-        	while ( answersQuery.next() ) {
-        		q.addAnswer(answersQuery.getString("text"));
-        	}
-        	qs.addQuestion(q);
-        }
-        
+		while ( rs.next() ) {
+			Question q = new Question();
+			q.setTitle(rs.getString("title"));
+			q.setType(rs.getString("type"));
+			PreparedStatement answerStatement = get_Connection().prepareStatement("SELECT answer_number, text FROM possible_answers WHERE question_round = ? AND question_number = ? ORDER BY answer_number");
+			answerStatement.setInt(1, currentRound);
+			answerStatement.setInt(2, rs.getInt("question_number"));
+			ResultSet answersQuery = answerStatement.executeQuery();
+			while ( answersQuery.next() ) {
+				q.addAnswer(answersQuery.getString("text"));
+			}
+			qs.addQuestion(q);
+		}
+
 
 		return qs;
 	}
-	
+
 
 	@WebMethod
 	public Question fetchQuestion(@WebParam(name="questionNumber")int questionNumber) throws Exception {
@@ -71,7 +71,7 @@ public class Api {
 			stmt.setInt(1, currentRound);
 			stmt.setInt(2, questionNumber);
 			rs = stmt.executeQuery();
-	
+
 			if (rs.next()){
 				Question q = new Question();
 				q.setTitle(rs.getString("title"));
@@ -79,7 +79,7 @@ public class Api {
 				PreparedStatement answerStatement = get_Connection().prepareStatement("SELECT answer_number, text FROM possible_answers WHERE question_round = ? AND question_number = ? ORDER BY answer_number");
 				answerStatement.setInt(1, currentRound);
 				answerStatement.setInt(2, questionNumber);
-				ResultSet answersQuery = answerStatement.executeQuery();	
+				ResultSet answersQuery = answerStatement.executeQuery();
 				while ( answersQuery.next() ) {
 					q.addAnswer(answersQuery.getString("text"));
 				}
@@ -104,14 +104,14 @@ public class Api {
 			rs = get_Connection().createStatement().executeQuery("SELECT question_round FROM question_rounds WHERE current_round = true");
 			rs.next();
 			int currentRound = rs.getInt("question_round");
-				
+
 			rs = get_Connection().createStatement().executeQuery("SELECT total_questions FROM question_rounds WHERE current_round = true");
 			rs.next();
 			for (int question_number = 0; question_number < answerlist.size(); question_number++) {
 				List<String> answers = answerlist.get(question_number).getAnswers();
 				for (int answer_number = 0; answer_number < answers.size(); answer_number++) {
 					String answer = answers.get(answer_number);
-					
+
 					// check if entry is in database
 					PreparedStatement preparedStmt = get_Connection().prepareStatement(
 							"SELECT question_number "
@@ -122,7 +122,7 @@ public class Api {
 					preparedStmt.setInt(3, question_number);
 					preparedStmt.setInt(4, answer_number);
 					ResultSet r = preparedStmt.executeQuery();
-					
+
 					if(r.first()){
 						// UPDATE
 						preparedStmt = get_Connection().prepareStatement(
