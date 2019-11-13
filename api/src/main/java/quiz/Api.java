@@ -116,7 +116,7 @@ public class Api {
 					PreparedStatement preparedStmt = get_Connection().prepareStatement(
 							"SELECT question_number "
 							+ "FROM answers "
-							+ "WHERE student_ID = ? AND question_round = ? AND question_number = ? AND answer_number = ?");
+							+ "WHERE student = ? AND question_round = ? AND question_number = ? AND answer_number = ?");
 					preparedStmt.setString(1, studentId);
 					preparedStmt.setInt(2, currentRound);
 					preparedStmt.setInt(3, question_number);
@@ -128,7 +128,7 @@ public class Api {
 						preparedStmt = get_Connection().prepareStatement(
 								"UPDATE answers "
 								+ "SET text = '"+ answer +"' "
-								+ "WHERE student_ID = ? AND question_round = ? AND question_number = ?  AND answer_number = ? ");
+								+ "WHERE student = ? AND question_round = ? AND question_number = ? AND answer_number = ? ");
 						preparedStmt.setString(1, studentId);
 						preparedStmt.setInt(2, currentRound);
 						preparedStmt.setInt(3, question_number);
@@ -137,7 +137,7 @@ public class Api {
 						retval = "The answers were updated successfully";
 					} else {
 						preparedStmt = get_Connection().prepareStatement(
-								"INSERT INTO answers (student_ID,question_round,question_number,answer_number,text) "
+								"INSERT INTO answers (student,question_round,question_number,answer_number,text) "
 								+ "VALUES (?,?,?,?,'" + answer + "')");
 						preparedStmt.setString(1, studentId);
 						preparedStmt.setInt(2, currentRound);
