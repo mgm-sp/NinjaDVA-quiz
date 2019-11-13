@@ -20,7 +20,7 @@ if (isset($_POST["next_question"])){
 				$return = "get_question.php?num=$next";
 			}
 		} else {
-			$return = "get_question.php?num=$question_num";
+			$return = "finish.php?message=Wrong+CSRF+Token";
 		}
 	}
 
