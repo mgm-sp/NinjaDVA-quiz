@@ -10,6 +10,7 @@ stopserver () {
 }
 
 startserver () {
+	mvn package -DskipTests
 	mvn exec:java -Dexec.mainClass="quiz.Publisher"&
 	echo $! > $PIDFILE
 	sleep 5
