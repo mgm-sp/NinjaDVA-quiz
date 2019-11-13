@@ -18,11 +18,11 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 public class Api {
 	Connection conn;
 	public Api() throws Exception {
-		conn = DriverManager.getConnection("jdbc:mysql://172.23.42.34:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
+		conn = DriverManager.getConnection("jdbc:mysql://quiz-db:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
 	}
 	private Connection get_Connection() throws SQLException {
 		if (conn.isClosed()) {
-			conn = DriverManager.getConnection("jdbc:mysql://172.23.42.34:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;	
+			conn = DriverManager.getConnection("jdbc:mysql://quiz-db:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
 		}
 		return conn;
 	}
