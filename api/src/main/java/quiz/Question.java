@@ -31,7 +31,7 @@ public class Question {
 	public void addAnswer(String answer) {
 		answers.add(answer);
 	}
-	@XmlElementWrapper(name="answers") 
+	@XmlElementWrapper(name="answers")
 	@XmlElement(name="answer")
 	 List<String> answers = new ArrayList<String>();
 }

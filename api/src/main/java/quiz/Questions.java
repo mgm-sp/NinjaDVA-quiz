@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class Questions {
 	List<Question> questions = new ArrayList<Question>();
-	
-    @XmlElementWrapper(name="questions") 
+
+    @XmlElementWrapper(name="questions")
     @XmlElement(name="question")
     public List<Question> getQuestions() {
 		return questions;
 	}
-    
+
     public void addQuestion(Question q) {
     	questions.add(q);
     }
