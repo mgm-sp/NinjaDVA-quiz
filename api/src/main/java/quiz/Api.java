@@ -14,11 +14,23 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @WebService
 public class Api {
 	Connection conn;
+	private ObjectMapper objectMapper;
+
 	public Api() throws Exception {
 		conn = DriverManager.getConnection("jdbc:mysql://quiz-db:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
+
+		objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
+		objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 	}
 	private Connection get_Connection() throws SQLException {
 		if (conn.isClosed()) {
@@ -156,5 +168,26 @@ public class Api {
 			//retval = e.getMessage();
 		}
 		return retval;
+	}
+
+	@WebMethod
+	public String exportAllQuestions() throws Exception {
+
+		ResultSet rs;
+		rs = get_Connection().createStatement().executeQuery("SELECT question_round FROM question_rounds");
+
+		List<Questions> allQuestions = new ArrayList<Questions>();
+		while ( rs.next() ) {
+			allQuestions.add(fetchQuestions(rs.getInt("question_round")));
+		}
+
+		String jsonDataString = objectMapper.writeValueAsString(allQuestions);
+		return jsonDataString;
+	}
+
+
+	@WebMethod
+	public String importAllQuestions(@WebParam(name="questionJSON")String questionImport) throws Exception {
+		return "Implement me";
 	}
 }

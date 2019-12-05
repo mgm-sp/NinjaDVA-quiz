@@ -10,9 +10,8 @@ Please choose a function:
 <form method='POST'>
 <select name='function'>
   <option value="view.php">View results</option>
-	<option value="insert.php">Insert questions</option>
-	<option value="delete.php">Delete questions</option>
-	<option value="modify.php">Modify questions</option>
+	<option value="export.php">Export questions</option>
+	<option value="import.php">Import questions</option>
 </select>
 <input type='submit' />
 </form>
