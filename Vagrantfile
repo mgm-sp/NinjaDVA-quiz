@@ -41,7 +41,8 @@ Vagrant.configure("2") do |config|
 		m.vm.synced_folder 'api', '/var/local/api/'
 
 		m.vm.provider "virtualbox" do |vb|
-			vb.memory = "1024"
+			vb.memory = "1536"
+			vb.cpus = 2
 		end
 
 		m.vm.provision "shell", inline: <<-END
