@@ -25,6 +25,8 @@ Vagrant.configure("2") do |config|
 		m.vm.provision :shell, inline: <<-END
 			apt-get update -y
 			apt-get install -y apache2 libapache2-mod-php php-soap
+			# add php version to output for easier exploitation
+			sed -e 's/^expose_php *=.*/expose_php = On/g' /etc/php/7.3/apache2/php.ini
 			cd /var/www/html/
 			service apache2 force-reload
 		END
