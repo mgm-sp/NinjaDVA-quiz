@@ -27,15 +27,10 @@ public class Api {
 		return conn;
 	}
 
-	@WebMethod
-	public Questions fetchQuestions() throws Exception {
+	private Questions fetchQuestions(int round) throws Exception {
 		ResultSet rs;
-		rs = get_Connection().createStatement().executeQuery("SELECT question_round, total_questions FROM question_rounds WHERE current_round = true");
-		rs.next();
-		int currentRound = rs.getInt("question_round");
-
 		PreparedStatement stmt = get_Connection().prepareStatement("SELECT question_number, title, type FROM questions WHERE question_round = ? ORDER BY question_number");
-		stmt.setInt(1, currentRound);
+		stmt.setInt(1, round);
 		rs = stmt.executeQuery();
 
 		Questions qs = new Questions();
@@ -44,7 +39,7 @@ public class Api {
 			q.setTitle(rs.getString("title"));
 			q.setType(rs.getString("type"));
 			PreparedStatement answerStatement = get_Connection().prepareStatement("SELECT answer_number, text FROM possible_answers WHERE question_round = ? AND question_number = ? ORDER BY answer_number");
-			answerStatement.setInt(1, currentRound);
+			answerStatement.setInt(1, round);
 			answerStatement.setInt(2, rs.getInt("question_number"));
 			ResultSet answersQuery = answerStatement.executeQuery();
 			while ( answersQuery.next() ) {
@@ -52,9 +47,18 @@ public class Api {
 			}
 			qs.addQuestion(q);
 		}
-
-
 		return qs;
+
+	}
+
+	@WebMethod
+	public Questions fetchQuestions() throws Exception {
+		ResultSet rs;
+		rs = get_Connection().createStatement().executeQuery("SELECT question_round, total_questions FROM question_rounds WHERE current_round = true");
+		rs.next();
+		int currentRound = rs.getInt("question_round");
+
+		return fetchQuestions(currentRound);
 	}
 
 
