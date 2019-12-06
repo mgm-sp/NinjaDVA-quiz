@@ -1,0 +1,12 @@
+---
+:description: |
+  TODO
+
+:category: "server side attacks"
+:name: "Insecure deserialization"
+:value: 100
+:keys:
+  - "TODO"
+
+:solutions:
+  - "TODO"
