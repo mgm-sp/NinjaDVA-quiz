@@ -6,8 +6,10 @@ PIDFILE=/tmp/quiz-api.pid
 export MAVEN_OPTS="-Xmx1024m"
 
 stopserver () {
-	kill "$(cat $PIDFILE)"
-	rm $PIDFILE
+	if [ -f "$PIDFILE" ]; then
+		kill "$(cat $PIDFILE)"
+		rm $PIDFILE
+	fi
 }
 
 startserver () {
