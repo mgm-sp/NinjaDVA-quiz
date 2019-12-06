@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -188,6 +189,8 @@ public class Api {
 
 	@WebMethod
 	public String importAllQuestions(@WebParam(name="questionJSON")String questionImport) throws Exception {
+		List<Questions> allQuestions;
+		allQuestions = objectMapper.readValue(questionImport, new TypeReference<List<Questions>>(){});
 		return "Implement me";
 	}
 }
