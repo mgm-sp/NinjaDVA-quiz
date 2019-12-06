@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
 			apt-get update -y
 			apt-get install -y default-mysql-server
 
-			mysql -u root -e "CREATE DATABASE IF NOT EXISTS quiz"
+			mysql -u root -e "CREATE DATABASE IF NOT EXISTS quiz;"
 			mysql -u root -e "CREATE USER '#{databaseuser}'@'%' IDENTIFIED BY '#{databasepass}';"
 			mysql -u root -e "GRANT ALL PRIVILEGES ON quiz.* TO '#{databaseuser}'@'%' WITH GRANT OPTION;"
 
