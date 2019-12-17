@@ -10,7 +10,7 @@ if ( basename($_SERVER["SCRIPT_NAME"]) === "admin.php") {
 <?php
 } else {
 	try {
-		$client->importAllQuestions(["questionJSON" => file_get_contents($_FILES["questions"]["tmp_name"])])->return;
+		echo $client->importAllQuestions(["questionJSON" => file_get_contents($_FILES["questions"]["tmp_name"])])->return;
 	} catch (Exception $e) {
 		echo $e->getMessage();
 	}
