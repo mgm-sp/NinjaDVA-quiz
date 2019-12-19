@@ -1,0 +1,5 @@
+.vagrant/
+api/.classpath
+api/.project
+api/.settings/
+api/config.properties
