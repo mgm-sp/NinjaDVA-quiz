@@ -17,12 +17,12 @@ Vagrant.configure("2") do |config|
 
 	config.vm.synced_folder ".", "/vagrant", disabled:true
 
+	databaseuser = "database_user"
+	databasepass = "damn_secret_password"
 	config.vm.define "quiz-db" do |m|# {{{ Database Backend
 		m.vm.provision "file", source: "./init.sql", destination: "/tmp/init.sql"
 		m.vm.hostname = "quiz-db"
 
-		databaseuser = "database_user"
-		databasepass = "damn_secret_password"
 		m.vm.provision :shell, inline: <<-END
 			apt-get update -y
 			apt-get install -y default-mysql-server
@@ -53,6 +53,7 @@ Vagrant.configure("2") do |config|
 			apt-get -y update
 			apt-get install -y maven default-jdk-headless tmux
 			cd /var/local/api
+			println "db.url=quiz-db\ndb.user=#{databaseuser}\ndb.password=#{databasepass}\n" > config.properties
 			mvn package -DskipTests
 		END
 		m.vm.provision "shell",

@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -31,7 +36,13 @@ public class Api {
 	private ObjectMapper objectMapper;
 
 	public Api() throws Exception {
-		conn = DriverManager.getConnection("jdbc:mysql://quiz-db:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
+		Properties prop = new Properties();
+    InputStream is = new FileInputStream("config.properties");
+    prop.load(is);
+		conn = DriverManager.getConnection("jdbc:mysql://"+ prop.getProperty("db.url") + ":3306/quiz?serverTimezone=UTC",
+				prop.getProperty("db.user"),
+				prop.getProperty("db.password"));
+
 
 		objectMapper = new ObjectMapper();
 		objectMapper.enableDefaultTyping();
