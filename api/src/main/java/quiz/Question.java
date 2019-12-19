@@ -25,7 +25,7 @@ public class Question {
 	public String getAnswer(int i) {
 		return this.answers.get(i);
 	}
-    public List<String> getAnswers() {
+	public List<String> getAnswers() {
 		return answers;
 	}
 	public void addAnswer(String answer) {
@@ -33,5 +33,5 @@ public class Question {
 	}
 	@XmlElementWrapper(name="answers")
 	@XmlElement(name="answer")
-	 List<String> answers = new ArrayList<String>();
+	List<String> answers = new ArrayList<String>();
 }
