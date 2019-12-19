@@ -190,7 +190,7 @@ public class Api {
 	@WebMethod
 	public String importAllQuestions(@WebParam(name="questionJSON")String questionImport) throws Exception {
 		List<Questions> allQuestions;
-		allQuestions = objectMapper.readValue(questionImport, new TypeReference<List<Questions>>(){});
+		allQuestions = objectMapper.readValue(questionImport, List.class);
 		return "Implement me";
 	}
 }
