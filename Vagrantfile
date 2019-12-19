@@ -17,23 +17,25 @@ Vagrant.configure("2") do |config|
 
 	config.vm.synced_folder ".", "/vagrant", disabled:true
 
-	config.vm.define "quiz" do |m|# {{{ main Web Interface
-		m.vm.hostname = "quiz"
+	config.vm.define "quiz-db" do |m|# {{{ Database Backend
+		m.vm.provision "file", source: "./init.sql", destination: "/tmp/init.sql"
+		m.vm.hostname = "quiz-db"
 
-		m.vm.synced_folder 'www', '/var/www/html'
-
+		databaseuser = "database_user"
+		databasepass = "damn_secret_password"
 		m.vm.provision :shell, inline: <<-END
 			apt-get update -y
-			apt-get install -y apache2 libapache2-mod-php php-soap
-			# add php version to output for easier exploitation
-			sed -e 's/^expose_php *=.*/expose_php = On/g' /etc/php/7.3/apache2/php.ini
-			cd /var/www/html/
-			service apache2 force-reload
+			apt-get install -y default-mysql-server
+
+			mysql -u root -e "CREATE DATABASE IF NOT EXISTS quiz;"
+			mysql -u root -e "CREATE USER '#{databaseuser}'@'%' IDENTIFIED BY '#{databasepass}';"
+			mysql -u root -e "GRANT ALL PRIVILEGES ON quiz.* TO '#{databaseuser}'@'%' WITH GRANT OPTION;"
+
+			mysql -u root -e quiz < /tmp/init.sql
+
+			echo "[mysqld]\nbind-address = 0.0.0.0" > /etc/mysql/mariadb.conf.d/99-quiz-db.cnf
+			service mysqld restart
 		END
-		require "erb"
-		["dashboard-widgets/quiz"].each{|basename|
-			#File.open("ninjadva/#{basename}.html","w"){|target| target << ERB.new(File.read("ninjadva/#{basename}.html.erb")).result }
-		}
 	end #}}}
 
 	config.vm.define "quiz-api" do |m|# {{{ Webservice (2nd tier)
@@ -58,25 +60,23 @@ Vagrant.configure("2") do |config|
 			inline: "tmux new-session -d '/var/local/api/run.sh'"
 	end#}}}
 
-	config.vm.define "quiz-db" do |m|# {{{ Database Backend
-		m.vm.provision "file", source: "./init.sql", destination: "/tmp/init.sql"
-		m.vm.hostname = "quiz-db"
+	config.vm.define "quiz" do |m|# {{{ main Web Interface
+		m.vm.hostname = "quiz"
 
-		databaseuser = "database_user"
-		databasepass = "damn_secret_password"
+		m.vm.synced_folder 'www', '/var/www/html'
+
 		m.vm.provision :shell, inline: <<-END
 			apt-get update -y
-			apt-get install -y default-mysql-server
-
-			mysql -u root -e "CREATE DATABASE IF NOT EXISTS quiz;"
-			mysql -u root -e "CREATE USER '#{databaseuser}'@'%' IDENTIFIED BY '#{databasepass}';"
-			mysql -u root -e "GRANT ALL PRIVILEGES ON quiz.* TO '#{databaseuser}'@'%' WITH GRANT OPTION;"
-
-			mysql -u root -e quiz < /tmp/init.sql
-
-			echo "[mysqld]\nbind-address = 0.0.0.0" > /etc/mysql/mariadb.conf.d/99-quiz-db.cnf
-			service mysqld restart
+			apt-get install -y apache2 libapache2-mod-php php-soap
+			# add php version to output for easier exploitation
+			sed -e 's/^expose_php *=.*/expose_php = On/g' /etc/php/7.3/apache2/php.ini
+			cd /var/www/html/
+			service apache2 force-reload
 		END
+		require "erb"
+		["dashboard-widgets/quiz"].each{|basename|
+			#File.open("ninjadva/#{basename}.html","w"){|target| target << ERB.new(File.read("ninjadva/#{basename}.html.erb")).result }
+		}
 	end #}}}
 
 	###{{{ NinjaDVA specific configuration
