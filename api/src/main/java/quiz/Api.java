@@ -21,6 +21,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.naming.spi.ObjectFactory;
+import org.springframework.beans.factory.config.PropertyPathFactoryBean;
+import org.springframework.jndi.support.SimpleJndiBeanFactory;
+
 @WebService
 public class Api {
 	Connection conn;
