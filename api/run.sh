@@ -1,7 +1,7 @@
 #!/bin/sh
 
+cd "$(dirname "$0")" || exit
 
-#mvn package
 PIDFILE=/tmp/quiz-api.pid
 export MAVEN_OPTS="-Xmx1024m"
 

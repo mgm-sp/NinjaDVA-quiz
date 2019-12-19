@@ -49,13 +49,13 @@ Vagrant.configure("2") do |config|
 
 		m.vm.provision "shell", inline: <<-END
 			apt-get -y update
-			apt-get install -y maven default-jdk-headless
+			apt-get install -y maven default-jdk-headless tmux
 			cd /var/local/api
 			mvn package -DskipTests
 		END
 		m.vm.provision "shell",
 			run: "always",
-			inline: "cd /var/local/api; ./run.sh&"
+			inline: "tmux new-session -d '/var/local/api/run.sh'"
 	end#}}}
 
 	config.vm.define "quiz-db" do |m|# {{{ Database Backend
