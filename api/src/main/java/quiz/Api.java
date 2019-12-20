@@ -200,7 +200,7 @@ public class Api {
 			allQuestions.add(fetchQuestions(rs.getInt("question_round")));
 		}
 
-		String jsonDataString = objectMapper.writeValueAsString(allQuestions);
+		String jsonDataString = objectMapper.writerFor(List.class).writeValueAsString(allQuestions);
 		return jsonDataString;
 	}
 
