@@ -33,10 +33,11 @@ import org.springframework.jndi.support.SimpleJndiBeanFactory;
 @WebService
 public class Api {
 	Connection conn;
+	Properties prop;
 	private ObjectMapper objectMapper;
 
 	public Api() throws Exception {
-		Properties prop = new Properties();
+		prop = new Properties();
     InputStream is = new FileInputStream("config.properties");
     prop.load(is);
 		conn = DriverManager.getConnection("jdbc:mysql://"+ prop.getProperty("db.url") + ":3306/quiz?serverTimezone=UTC",
@@ -50,7 +51,9 @@ public class Api {
 	}
 	private Connection get_Connection() throws SQLException {
 		if (conn.isClosed()) {
-			conn = DriverManager.getConnection("jdbc:mysql://quiz-db:3306/quiz?serverTimezone=UTC", "database_user", "damn_secret_password") ;
+			conn = DriverManager.getConnection("jdbc:mysql://"+ prop.getProperty("db.url") + ":3306/quiz?serverTimezone=UTC",
+					prop.getProperty("db.user"),
+					prop.getProperty("db.password"));
 		}
 		return conn;
 	}
