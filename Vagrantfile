@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 			mysql -u root -e "CREATE USER '#{databaseuser}'@'%' IDENTIFIED BY '#{databasepass}';"
 			mysql -u root -e "GRANT ALL PRIVILEGES ON quiz.* TO '#{databaseuser}'@'%' WITH GRANT OPTION;"
 
-			mysql -u root -e quiz < /tmp/init.sql
+			mysql -u root quiz < /tmp/init.sql
 
 			echo "[mysqld]\nbind-address = 0.0.0.0" > /etc/mysql/mariadb.conf.d/99-quiz-db.cnf
 			service mysqld restart
