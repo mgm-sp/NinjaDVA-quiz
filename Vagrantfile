@@ -6,10 +6,6 @@
 Vagrant.configure("2") do |config|
 
 	config.vm.box = "bento/debian-10"
-	config.vbguest.auto_update = false
-
-	#config.vm.box = "mgmsp/debian-minimal"
-	#config.vm.box_url = "https://sp-vm-repo.mgm-edv.de/vagrant/debian-minimal.json"
 
 	#config.vm.provision "shell", inline: <<-END
 		#apt-get purge -y resolvconf
