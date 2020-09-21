@@ -18,6 +18,15 @@ Vagrant.configure("2") do |config|
 	config.vm.define "quiz-db" do |m|# {{{ Database Backend
 		m.vm.provision "file", source: "./init.sql", destination: "/tmp/init.sql"
 		m.vm.hostname = "quiz-db"
+		m.vm.provider "virtualbox" do |vb|
+			vb.memory = 512
+			vb.cpus = 1
+		end
+		###{{{ NinjaDVA specific configuration
+		if File.exists?("../ninjadva.rb")
+			require "../ninjadva"
+			NinjaDVA.new(m)
+		end#}}}
 
 		m.vm.provision :shell, inline: <<-END
 			apt-get update -y
@@ -37,6 +46,11 @@ Vagrant.configure("2") do |config|
 	config.vm.define "quiz-api" do |m|# {{{ Webservice (2nd tier)
 		m.vm.box = "bento/debian-9"
 		m.vm.hostname = "quiz-api"
+		###{{{ NinjaDVA specific configuration
+		if File.exists?("../ninjadva.rb")
+			require "../ninjadva"
+			NinjaDVA.new(m)
+		end#}}}
 
 		m.vm.synced_folder 'api', '/var/local/api/'
 
@@ -59,6 +73,15 @@ Vagrant.configure("2") do |config|
 
 	config.vm.define "quiz" do |m|# {{{ main Web Interface
 		m.vm.hostname = "quiz"
+		m.vm.provider "virtualbox" do |vb|
+			vb.memory = 512
+			vb.cpus = 1
+		end
+		###{{{ NinjaDVA specific configuration
+		if File.exists?("../ninjadva.rb")
+			require "../ninjadva"
+			NinjaDVA.new(m)
+		end#}}}
 
 		m.vm.synced_folder 'www', '/var/www/html'
 
@@ -76,10 +99,5 @@ Vagrant.configure("2") do |config|
 		}
 	end #}}}
 
-	###{{{ NinjaDVA specific configuration
-	if File.exists?("../ninjadva.rb")
-		require "../ninjadva"
-		NinjaDVA.new(config)
-	end#}}}
 end
 
