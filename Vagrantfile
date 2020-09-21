@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
 			apt-get -y update
 			apt-get install -y maven default-jdk-headless tmux
 			cd /var/local/api
-			println "db.url=quiz-db\ndb.user=#{databaseuser}\ndb.password=#{databasepass}\n" > config.properties
+			printf "db.url=quiz-db\ndb.user=%s\ndb.password=%s\n" '#{databaseuser}' '#{databasepass}' > config.properties
 			mvn package -DskipTests
 		END
 		m.vm.provision "shell",
