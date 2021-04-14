@@ -38,8 +38,8 @@ public class Api {
 
 	public Api() throws Exception {
 		prop = new Properties();
-    InputStream is = new FileInputStream("config.properties");
-    prop.load(is);
+		InputStream is = new FileInputStream("config.properties");
+		prop.load(is);
 		conn = DriverManager.getConnection("jdbc:mysql://"+ prop.getProperty("db.url") + ":3306/quiz?serverTimezone=UTC",
 				prop.getProperty("db.user"),
 				prop.getProperty("db.password"));
